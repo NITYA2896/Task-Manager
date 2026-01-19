@@ -8,13 +8,17 @@ const Login = () => {
     const [password, setPassword] = useState('');
     const { login } = useContext(AuthContext);
     const [error, setError] = useState(null);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setError(null);
+        setIsSubmitting(true);
         try {
             await login(email, password);
         } catch (err) {
             setError(err.response?.data?.message || 'Login failed');
+            setIsSubmitting(false);
         }
     };
 
@@ -55,8 +59,8 @@ const Login = () => {
                         />
                     </div>
 
-                    <button type="submit" className="btn-auth">
-                        Sign In
+                    <button type="submit" className="btn-auth" disabled={isSubmitting}>
+                        {isSubmitting ? 'Signing In...' : 'Sign In'}
                     </button>
                 </form>
                 <p className="auth-footer">

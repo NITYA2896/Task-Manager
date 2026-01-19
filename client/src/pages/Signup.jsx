@@ -9,15 +9,19 @@ const Signup = () => {
     const [password, setPassword] = useState('');
     const { register } = useContext(AuthContext);
     const [error, setError] = useState(null);
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setError(null);
+        setIsSubmitting(true);
         try {
             await register(name, email, password);
             navigate('/login');
         } catch (err) {
             setError(err.response?.data?.message || 'Registration failed');
+            setIsSubmitting(false);
         }
     };
 
@@ -69,8 +73,8 @@ const Signup = () => {
                         />
                     </div>
 
-                    <button type="submit" className="btn-auth">
-                        Sign Up
+                    <button type="submit" className="btn-auth" disabled={isSubmitting}>
+                        {isSubmitting ? 'Signing Up...' : 'Sign Up'}
                     </button>
                 </form>
                 <p className="auth-footer">

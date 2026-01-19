@@ -22,7 +22,7 @@ const Dashboard = () => {
                     Authorization: `Bearer ${user.token}`,
                 },
             };
-            const res = await axios.get('http://localhost:5000/api/tasks', config);
+            const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/tasks`, config);
             setTasks(res.data);
         } catch (err) {
             console.error(err);
@@ -46,12 +46,12 @@ const Dashboard = () => {
         try {
             if (taskToEdit) {
                 await axios.put(
-                    `http://localhost:5000/api/tasks/${taskToEdit._id}`,
+                    `${import.meta.env.VITE_API_URL}/api/tasks/${taskToEdit._id}`,
                     taskData,
                     config
                 );
             } else {
-                await axios.post('http://localhost:5000/api/tasks', taskData, config);
+                await axios.post(`${import.meta.env.VITE_API_URL}/api/tasks`, taskData, config);
             }
             fetchTasks();
             setIsModalOpen(false);
@@ -69,7 +69,7 @@ const Dashboard = () => {
                         Authorization: `Bearer ${user.token}`,
                     },
                 };
-                await axios.delete(`http://localhost:5000/api/tasks/${id}`, config);
+                await axios.delete(`${import.meta.env.VITE_API_URL}/api/tasks/${id}`, config);
                 fetchTasks();
             } catch (err) {
                 console.error(err);
@@ -86,7 +86,7 @@ const Dashboard = () => {
         try {
             const newStatus = task.status === 'Completed' ? 'Pending' : 'Completed';
             await axios.put(
-                `http://localhost:5000/api/tasks/${task._id}`,
+                `${import.meta.env.VITE_API_URL}/api/tasks/${task._id}`,
                 { status: newStatus },
                 config
             );
